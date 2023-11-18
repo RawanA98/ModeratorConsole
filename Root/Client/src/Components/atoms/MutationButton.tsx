@@ -1,25 +1,26 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 
-interface MutationButtonProps{
+export interface MutationButtonProps{
     mutationFunction: any;
     buttonText: string;
-    handleChanges: (value: string) => void;
+    handleChanges: () => void;
     buttonVariantColor: string;
+    isButtonDisabled: boolean;
 }
 
-const MutationButton = ({ mutationFunction, buttonText,buttonVariantColor, handleChanges}: MutationButtonProps) => {
+const MutationButton = ({ mutationFunction, buttonText,buttonVariantColor, handleChanges, isButtonDisabled}: MutationButtonProps) => {
   const handleButtonClick = async () => {
     try {
       // Execute the provided mutation function
       const { data } = await mutationFunction();
 
       if(data.mediaCensor){
-        console.log('Mutation response:', data);
-        handleChanges(data.mediaCensor.status);
+        console.log(data);
+        handleChanges();
       }else{
-        console.log('Mutation response:', data);
-        handleChanges(data.mediaValid.status);
+        console.log(data);
+        handleChanges();
       }
     } catch (error) {
       // Handle any error that occurs during the mutation
@@ -28,7 +29,7 @@ const MutationButton = ({ mutationFunction, buttonText,buttonVariantColor, handl
   };
 
   return (
-    <Button onClick={handleButtonClick} variant={buttonVariantColor}>{buttonText}</Button>
+    <Button onClick={handleButtonClick} className='w-100' variant={buttonVariantColor} disabled={isButtonDisabled}>{buttonText}</Button>
   );
 };
 
